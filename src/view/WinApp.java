@@ -14,7 +14,6 @@ public class WinApp {
 		footerPane = new JPanel(),
 		masterPane = new JPanel();
 	private void initialize() {
-		win.setTitle(playerName);
 		win.setTitle("Rock Paper Scissors Advance");
 		win.setResizable(false);
 		win.setSize(835, 482);
@@ -61,6 +60,7 @@ public class WinApp {
 	}
 	private void startPlayCtx() {
 		erase(400, 300);
+		win.setTitle("Player: %s".formatted(playerName));
 		t = 10;
 		JLabel countPane = new JLabel("%d".formatted(t));
 		timer = new Timer(1000, e -> {
