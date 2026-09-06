@@ -1,16 +1,19 @@
 package view;
 import java.awt.*;
+import java.util.Arrays;
 import javax.swing.*;
 import model.Choice;
 import controller.Round;
 public class WinApp {
+	private boolean isExtra = false;
 	private String playerName;
 	private Round round;
 	private int t;
 	private Timer timer;
 	private final JFrame win = new JFrame();
 	private final Container ctx = win.getContentPane();
-	private final JPanel headerPane = new JPanel(),
+	private final JPanel
+		headerPane = new JPanel(),
 		footerPane = new JPanel(),
 		masterPane = new JPanel();
 	private void initialize() {
@@ -48,15 +51,18 @@ public class WinApp {
 		masterPane.setLayout(new GridLayout(1, 1));
 		masterPane.add(choicePlayer);
 		JButton start = new JButton("Enter");
+		JComboBox<String> modeCombo = new JComboBox<>(new String[] {"Regular", "Extra"});
 		start.addActionListener(e -> {
 			playerName = !choicePlayer.getText().isBlank()
 				? choicePlayer.getText().strip()
 				: "player";
 			System.out.println(playerName);
+			isExtra = modeCombo.getSelectedItem().equals("Extra");
 			startPlayCtx();
 		});
-		footerPane.setLayout(new GridLayout(1, 1));
+		footerPane.setLayout(new GridLayout(1, 2));
 		footerPane.add(start);
+		footerPane.add(modeCombo);
 	}
 	private void startPlayCtx() {
 		erase(400, 300);
@@ -67,7 +73,7 @@ public class WinApp {
 			if (t > 1)
 				countPane.setText("%d".formatted(--t));
 			else {
-				round = new Round(Choice.rand(), Choice.rand());
+				round = new Round(Choice.rand(isExtra), Choice.rand(isExtra));
 				resultPlayCtx(round);
 			}
 		});
@@ -75,23 +81,29 @@ public class WinApp {
 		footerPane.add(new JLabel("%s".formatted(round != null ? round : "prima partita")));
 		JPanel choicePane = new JPanel(new GridLayout(2, 3));
 		masterPane.setLayout(new BorderLayout());
-		for (Choice c : Choice.values()) {
-			final ImageIcon img = new ImageIcon("img/%s.png".formatted(c.toString().toLowerCase()));
-			img.getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH);
-			final JButton btn = new JButton(img);
-			btn.addActionListener(e -> {
-				round = new Round(c, Choice.rand());
-				if (timer.isRunning())
-					timer.stop();
-				resultPlayCtx(round);
+		Arrays.stream(Choice.values())
+			.limit(isExtra ? Choice.values().length : 3)
+			.forEach(c -> {
+				JButton btn = new JButton(
+					new ImageIcon(
+						new ImageIcon(
+							"img/%s.png".formatted(c.name().toLowerCase())
+						).getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH)
+					)
+				);
+				btn.addActionListener(e -> {
+					if (timer.isRunning())
+						timer.stop();
+					round = new Round(c, Choice.rand(isExtra));
+					resultPlayCtx(round);
+				});
+				choicePane.add(btn);
 			});
-			choicePane.add(btn);
-		}
 		final ImageIcon img = new ImageIcon("img/gear.png");
 		img.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
 		final JButton btn = new JButton(img);
 		btn.addActionListener(e -> {
-			round = new Round(Choice.rand(), Choice.rand());
+			round = new Round(Choice.rand(isExtra), Choice.rand(isExtra));
 			if (timer.isRunning())
 				timer.stop();
 			resultPlayCtx(round);
@@ -111,11 +123,15 @@ public class WinApp {
 		System.out.println(round);
 		headerPane.add(new JLabel("%s you have %s".formatted(
 			playerName,
-			round.status().toString().toLowerCase())));
+			round.status().toString().toLowerCase()))
+		);
 		masterPane.setLayout(new GridLayout(1, 5));
 		for (final String figure : new String[]{
-					"human", round.getHuman().toString().toLowerCase(), "vs",
-					round.getRobot().toString().toLowerCase(), "robot"
+			"human",
+			round.getHuman().toString().toLowerCase(),
+			"vs",
+			round.getRobot().toString().toLowerCase(),
+			"robot"
 		})
 			masterPane.add(new JLabel(new ImageIcon("img/%s.png".formatted(figure))));
 		JButton playAgain = new JButton("Play Again");
