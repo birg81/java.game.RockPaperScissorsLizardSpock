@@ -152,7 +152,7 @@ src/
 
 Contains the core domain elements.
 
-### [`Choice`](./src/model/Choice.java)
+### [`Choice`](./src/main/java/model/Choice.java)
 
 Represents the available moves:
 
@@ -168,7 +168,7 @@ It also handles random selection for the robot 🤖, restricted to the active ga
 Choice.rand(isExtra)
 ```
 
-### [`Status`](./src/model/Status.java)
+### [`Status`](./src/main/java/model/Status.java)
 
 Represents the outcome of a match:
 
@@ -178,7 +178,7 @@ Represents the outcome of a match:
 
 ## `controller`
 
-### [`Round`](./src/controller/Round.java)
+### [`Round`](./src/main/java/controller/Round.java)
 
 Represents a single match between: `👦 Human 🆚 🤖 Robot`
 
@@ -191,7 +191,7 @@ It handles:
 
 ## `view`
 
-### [`WinApp`](./src/view/WinApp.java)
+### [`WinApp`](./src/main/java/view/WinApp.java)
 
 Manages the Swing graphical user interface.
 
@@ -362,7 +362,7 @@ src/
 
 Contiene gli elementi fondamentali del dominio.
 
-### [`Choice`](./src/model/Choice.java)
+### [`Choice`](./src/main/java/model/Choice.java)
 
 Rappresenta le possibili scelte:
 
@@ -378,7 +378,7 @@ Fornisce inoltre la generazione casuale della scelta del robot 🤖, limitata al
 Choice.rand(isExtra)
 ```
 
-### [`Status`](./src/model/Status.java)
+### [`Status`](./src/main/java/model/Status.java)
 
 Rappresenta l'esito di una partita:
 
@@ -388,7 +388,7 @@ Rappresenta l'esito di una partita:
 
 ## `controller`
 
-### [`Round`](./src/controller/Round.java)
+### [`Round`](./src/main/java/controller/Round.java)
 
 Rappresenta una singola partita tra: `👦 Human 🆚 🤖 Robot`
 
@@ -402,7 +402,7 @@ Si occupa di:
 
 ## `view`
 
-### [`WinApp`](./src/view/WinApp.java)
+### [`WinApp`](./src/main/java/view/WinApp.java)
 
 Gestisce l'interfaccia grafica Swing.
 
